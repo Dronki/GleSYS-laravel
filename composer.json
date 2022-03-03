@@ -1,0 +1,54 @@
+{
+    "name": "dronki/glesys-laravel",
+    "description": "Laravel package for integrating GleSYS-api",
+    "keywords": [
+        "dronki",
+        "glesys"
+    ],
+    "homepage": "https://github.com/dronki/glesys-laravel",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Rickard Ahlstedt",
+            "email": "rickard@ahlstedt.xyz",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dronki\\GleSYS\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dronki\\GleSYS\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dronki\\GleSYS\\GleSYSServiceProvider"
+            ],
+            "aliases": {
+                "GleSYS": "Dronki\\GleSYS\\GleSYSFacade"
+            }
+        }
+    }
+}
