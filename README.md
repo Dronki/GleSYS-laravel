@@ -2,7 +2,6 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/dronki/glesys-laravel.svg?style=flat-square)](https://packagist.org/packages/dronki/glesys-laravel)
 [![Total Downloads](https://img.shields.io/packagist/dt/dronki/glesys-laravel.svg?style=flat-square)](https://packagist.org/packages/dronki/glesys-laravel)
-![GitHub Actions](https://github.com/dronki/glesys-laravel/actions/workflows/main.yml/badge.svg)
 
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
