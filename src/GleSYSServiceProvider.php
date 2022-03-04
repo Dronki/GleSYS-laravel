@@ -20,25 +20,7 @@ class GleSYSServiceProvider extends ServiceProvider
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('glesys.php'),
-            ], 'config');
-
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/glesys'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/glesys'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/glesys'),
-            ], 'lang');*/
-
+            $this->mergeConfigFrom( __DIR__.'/../config/config.php', 'glesys' );
             // Registering package commands.
             // $this->commands([]);
         }
@@ -50,7 +32,15 @@ class GleSYSServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'glesys');
+        // $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'glesys');
+
+        if( app()->runningInConsole() ) {
+            $this->publishes( [
+                __DIR__ . '/../config/config.php' => config_path( 'glesys.php' ),
+            ], 'glesys' );
+        }
+
+        
 
         // Register the main class to use with the facade
         $this->app->singleton('glesys', function () {
