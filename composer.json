@@ -3,7 +3,9 @@
     "description": "Laravel package for integrating GleSYS-api",
     "keywords": [
         "dronki",
-        "glesys"
+        "glesys",
+        "laravel",
+        "api"
     ],
     "homepage": "https://github.com/dronki/glesys-laravel",
     "license": "MIT",
