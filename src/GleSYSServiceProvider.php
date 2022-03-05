@@ -46,5 +46,8 @@ class GleSYSServiceProvider extends ServiceProvider
         $this->app->singleton('glesys', function () {
             return new GleSYS;
         });
+        $this->app->singleton( 'glesys.email', function () {
+            return new GleSYSEmail;
+        } );
     }
 }
