@@ -81,6 +81,8 @@ class GleSYS {
         return $this->oPunyCode->decode($sURL);
     }
 
+    #region email
+
     /**
      * Get the list of all domains and email accounts and aliases
      *
@@ -171,7 +173,7 @@ class GleSYS {
      * The email account must not exist.
      * The email account must be a valid email address.
      * The password must be at least 6 characters long.
-     * 
+     *
      * @param string $sEmailAccount required.
      * @param string $sPassword required.
      * @param array $aData optional, used to set the accounts antispamlevel and such properties.
@@ -228,7 +230,7 @@ class GleSYS {
 
     /**
      * Delete an email-account or alias.
-     * 
+     *
      * @param string $sEmailAccount required.
      * @return array on success, false on error.
      */
@@ -246,7 +248,7 @@ class GleSYS {
     /**
      * Get information about the quota of an account.
      * I.e how much space is used and how much is left.
-     * 
+     *
      * @param string $sEmailAccount required.
      * @return array on success, false on error.
      */
@@ -263,7 +265,7 @@ class GleSYS {
 
     /**
      * Create an email-alias
-     * 
+     *
      * @param string $sAlias required.
      * @param string|array $sGoto required.
      * @return array on success, false on error.
@@ -285,7 +287,7 @@ class GleSYS {
 
     /**
      * Edit an email-alias
-     * 
+     *
      * @param string $sAlias required.
      * @param string|array $sGoto required.
      * @return array on success, false on error.
@@ -307,7 +309,7 @@ class GleSYS {
 
     /**
      * Delete an email-alias
-     * 
+     *
      * @param string $sAlias required.
      * @return array on success, false on error.
      */
@@ -321,5 +323,206 @@ class GleSYS {
         }
         return $this->aResponse;
     }
+
+    #endregion
+
+    #region domain
+
+    public function listDomains() {
+        $bSuccess = $this->request( 'domain/list' );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function addDomain( $sDomain, $aParams = [] ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+        ];
+        if( !empty($aParams) ) {
+            $aArgs = array_merge( $aArgs, $aParams );
+        }
+        $bSuccess = $this->request( 'domain/add', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function registerDomain( $aDomainData = [] ) {
+        $aDomainData['domainname'] = $this->punyEncode( $aDomainData['domain'] );
+
+        $bSuccess = $this->request( 'domain/register', $aDomainData );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function transferDomain( $aDomainData = [] ) {
+        $aDomainData['domainname'] = $this->punyEncode( $aDomainData['domain'] );
+
+        $bSuccess = $this->request( 'domain/transfer', $aDomainData );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function renewDomain( $sDomain, $iYears = 1 ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+            'numyears' => $iYears
+        ];
+        $bSuccess = $this->request( 'domain/renew', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function autoRenewDomain( $sDomain, $bAutoRenew = true ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+            'autorenew' => $bAutoRenew ? 1 : 0
+        ];
+        $bSuccess = $this->request( 'domain/autorenew', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function getDomain( $sDomain ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+        ];
+        $bSuccess = $this->request( 'domain/details', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function pricelistDomains() {
+        $bSuccess = $this->request( 'domain/pricelist' );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function isDomainAvailable( $sDomain ) {
+        $aArgs = [
+            'search' => $this->punyEncode( $sDomain ),
+        ];
+        $bSuccess = $this->request( 'domain/available', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function editDomain( $sDomain, $aParams = [] ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+        ];
+        if( !empty($aParams) ) {
+            $aArgs = array_merge( $aArgs, $aParams );
+        }
+        $bSuccess = $this->request( 'domain/edit', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function deleteDomain( $sDomain ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+        ];
+        $bSuccess = $this->request( 'domain/delete', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    #region DNS
+
+    public function listDNSRecords( $sDomain ) {
+        $aArgs = [
+            'domainname' => $this->punyEncode( $sDomain ),
+        ];
+        $bSuccess = $this->request( 'domain/listrecords', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function createDNSRecord( $aData ) {
+        $aData['domainname'] = $this->punyEncode( $aData['domainname'] );
+        $bSuccess = $this->request( 'domain/createrecord', $aData );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function updateDNSRecord( $iRecordId, $aData = [] ) {
+        $aArgs = [
+            'recordid' => $iRecordId,
+        ];
+        if( !empty( $aData ) ) {
+            $aArgs = array_merge( $aArgs, $aData );
+        }
+        $bSuccess = $this->request( 'domain/updaterecord', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    public function deleteDNSRecord( $iRecordId ) {
+        $aArgs = [
+            'recordid' => $iRecordId,
+        ];
+        $bSuccess = $this->request( 'domain/deleterecord', $aArgs );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    #endregion
+
+    #region util
+
+    public function allowedArgumentsForDomains() {
+        $bSuccess = $this->request( 'domain/allowedArguments' );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    /**
+     *
+     */
+    public function changeNameServers( $aData ) {
+        $aData['domainname'] = $this->punyEncode( $aData['domainname'] );
+
+        $bSuccess = $this->request( 'domain/changenameservers', $aData );
+        if( !$bSuccess ) {
+            return false;
+        }
+        return $this->aResponse;
+    }
+
+    #endregion
+
+    #endregion
 
 }
